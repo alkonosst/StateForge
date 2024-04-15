@@ -80,10 +80,19 @@ class StateMachine {
   TranResult dispatch(EventType event) {
     for (const auto& transition : _transitions) {
       if (transition.from == _current_state && transition.event == event) {
-        TranResult result;
+        TranResult result = TranResult::Change;
 
-        if (transition.on_enter)
-          transition.on_enter(transition.from, transition.event, transition.to, transition.context);
+        // Search for the next transition and execute on_enter function if it exists
+        for (const auto& next_transition : _transitions) {
+          if ((next_transition.from == transition.to) && next_transition.on_enter) {
+            next_transition.on_enter(transition.from,
+              transition.event,
+              transition.to,
+              next_transition.context);
+
+            break;
+          }
+        }
 
         if (transition.on_transition)
           result = transition.on_transition(transition.from,
