@@ -15,7 +15,8 @@ namespace StateForge {
 
 enum class TranResult { Change, NoChange, Reset, NotFound, InvalidContext };
 
-struct Context {
+class Context {
+  public:
   virtual ~Context() = default;
 
   Context(size_t derived_type)
@@ -24,8 +25,6 @@ struct Context {
   Context& operator=(const Context&) = default;
   Context(Context&&)                 = delete;
   Context& operator=(Context&&)      = delete;
-
-  size_t derived_type;
 
   template <typename Type>
   bool is() const {
@@ -39,6 +38,9 @@ struct Context {
     // If Type has not the type member, it will fail to compile (no static_assert needed)
     return derived_type == Type::type;
   }
+
+  private:
+  size_t derived_type;
 };
 
 template <typename StateType, typename EventType>
