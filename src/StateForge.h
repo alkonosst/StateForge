@@ -13,7 +13,7 @@
 
 namespace StateForge {
 
-enum class TranResult { Change, DontChange, Reset, NotFound, InvalidContext };
+enum class TranResult { Change, NoChange, Reset, NotFound, InvalidContext };
 
 struct Context {
   virtual ~Context() = default;
