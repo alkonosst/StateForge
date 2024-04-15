@@ -71,6 +71,12 @@ class StateMachine {
       , _current_state(initial_state)
       , _transitions(transitions) {}
 
+  ~StateMachine()                              = default;
+  StateMachine(const StateMachine&)            = delete;
+  StateMachine& operator=(const StateMachine&) = delete;
+  StateMachine(StateMachine&&)                 = delete;
+  StateMachine& operator=(StateMachine&&)      = delete;
+
   TranResult dispatch(EventType event) {
     for (const auto& transition : _transitions) {
       if (transition.from == _current_state && transition.event == event) {
