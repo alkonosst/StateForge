@@ -82,6 +82,15 @@ class StateMachine {
       if (transition.from == _current_state && transition.event == event) {
         TranResult result = TranResult::Change;
 
+        if (transition.on_transition)
+          result = transition.on_transition(transition.from,
+            transition.event,
+            transition.to,
+            transition.context);
+
+        if (transition.on_exit)
+          transition.on_exit(transition.from, transition.event, transition.to, transition.context);
+
         // Search for the next transition and execute on_enter function if it exists
         for (const auto& next_transition : _transitions) {
           if ((next_transition.from == transition.to) && next_transition.on_enter) {
@@ -93,15 +102,6 @@ class StateMachine {
             break;
           }
         }
-
-        if (transition.on_transition)
-          result = transition.on_transition(transition.from,
-            transition.event,
-            transition.to,
-            transition.context);
-
-        if (transition.on_exit)
-          transition.on_exit(transition.from, transition.event, transition.to, transition.context);
 
         switch (result) {
           case TranResult::Change: _current_state = transition.to; return result;
