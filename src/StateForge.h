@@ -117,6 +117,16 @@ class StateMachine {
   StateType getCurrentState() { return _current_state; }
   void resetState() { _current_state = _initial_state; }
 
+  Context* const getContext(StateType from, EventType event, StateType to) const {
+    for (const auto& transition : _transitions) {
+      if ((transition.from == from) && (transition.event == event) && (transition.to == to)) {
+        return transition.context;
+      }
+    }
+
+    return nullptr;
+  }
+
   private:
   StateType _initial_state;
   StateType _current_state;
