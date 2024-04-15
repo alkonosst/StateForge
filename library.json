@@ -1,0 +1,11 @@
+{
+  "name": "StateForge",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alkonosst/StateForge.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}
