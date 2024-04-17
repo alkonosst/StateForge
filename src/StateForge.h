@@ -91,9 +91,12 @@ class StateMachine {
         if (transition.on_exit)
           transition.on_exit(transition.from, transition.event, transition.to, transition.context);
 
-        // Search for the next transition and execute on_enter function if it exists
+        // If the transition result is Reset, it will execute the on_enter hook of the initial state
+        // Else, it will execute the on_enter hook of the next state
+        StateType next_state = result == TranResult::Reset ? _initial_state : transition.to;
+
         for (const auto& next_transition : _transitions) {
-          if ((next_transition.from == transition.to) && next_transition.on_enter) {
+          if ((next_transition.from == next_state) && next_transition.on_enter) {
             next_transition.on_enter(transition.from,
               transition.event,
               transition.to,
